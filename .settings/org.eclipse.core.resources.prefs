@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/Integracion/Empleados/DAOEmpleadosImp.java=UTF-8
+encoding//src/Integracion/Pelicula/DAOPeliculaImp.java=UTF-8
+encoding//src/Integracion/Sesion/DAOSesionImp.java=UTF-8
+encoding//src/Negocio/Sesion/ServicioSesionImp.java=UTF-8
+encoding//src/Negocio/Sesion/TSesion.java=UTF-8
+encoding//src/Presentacion/Controlador/Controlador.java=UTF-8
+encoding//src/Presentacion/Controlador/ControladorImp.java=UTF-8
+encoding//src/Presentacion/Sala/GUIAnadirSala.java=UTF-8
+encoding//src/Presentacion/Sesion/VSImp.java=UTF-8

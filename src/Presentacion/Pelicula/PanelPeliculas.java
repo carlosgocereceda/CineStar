@@ -1,0 +1,203 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Presentacion.Pelicula;
+
+import Negocio.Pelicula.TPelicula;
+import Presentacion.Controlador.Controlador;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
+
+/**
+ *
+ * @author gerar
+ */
+public class PanelPeliculas extends javax.swing.JPanel {
+    private LabelTPelicula labelSeleccionado;
+    private int alto;
+    /**
+     * Creates new form PanelPeliculas
+     */
+    public PanelPeliculas(ArrayList<TPelicula> tPeliculas) {
+    	alto = 369;
+    	int ncolumnas = 5;
+    	int filas = tPeliculas.size()/ ncolumnas;
+    	int pelisUltimaFila = tPeliculas.size()% ncolumnas;
+        if( filas > 2 || (filas == 2 && pelisUltimaFila != 0)){
+        	alto = (filas*170)+230;
+        	//alto = 1000;
+        }
+        initComponents();
+        
+        this.setOpaque(false);
+        scrollPeliculas.setOpaque(false);
+        scrollPeliculas.getViewport().setOpaque(false);
+        
+        scrollPeliculas.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        
+        
+        panelAllPeliculas.setLayout(new BoxLayout(panelAllPeliculas, BoxLayout.Y_AXIS));
+        panelAllPeliculas.setOpaque(false);
+        scrollPeliculas.setOpaque(false);
+        //Controlador ctrl = Controlador.getInstancia();
+        //ArrayList<TPelicula> tPeliculas = ctrl.getAllPeliculas();
+
+        
+        
+        JPanel panel = new JPanel();
+        panel.setOpaque(false);
+        if(tPeliculas != null){
+            for (int i = 0; i < tPeliculas.size(); i++) {
+                if(i%ncolumnas == 0){
+                    panelAllPeliculas.add(panel);
+                    panel = new JPanel();
+                    panel.setOpaque(false);
+                }
+                final LabelTPelicula label = new LabelTPelicula(tPeliculas.get(i));
+                ImageIcon img = new ImageIcon(tPeliculas.get(i).getImagen().getImagen());
+                Icon icono = new ImageIcon(img.getImage().getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+                label.setIcon(icono);
+                label.addMouseListener(new MouseAdapter(){
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if(labelSeleccionado != null && labelSeleccionado == label){
+                            labelSeleccionado = null;
+                            label.setBorder(null);
+                        }else{                           
+                            if(labelSeleccionado != null){
+                                labelSeleccionado.setBorder(null);
+                            }
+                            labelSeleccionado = label;
+                            LabelTPelicula l = (LabelTPelicula) e.getSource();
+                            l.setBorder(BorderFactory.createLineBorder(Color.black));
+                        }
+                    }
+                    
+                });
+                label.setPreferredSize(new Dimension(100, 150));
+                panel.add(label);
+            }
+        }
+        if (panel.getComponentCount() != 0) {
+                panelAllPeliculas.add(panel);
+        }
+        
+        btnAnadirPelicula.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+            	Controlador.getInstancia().accion(null, Controlador.VER_ANADIR_PELICULA);
+			}			
+		});
+        btnModificarPelicula.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(labelSeleccionado != null){
+                	Controlador.getInstancia().accion(labelSeleccionado.gettPelicula(), Controlador.VER_MODIFICAR_PELICULA);
+                }
+                
+            }
+            
+        });
+        btnEliminarPelicula.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Apéndice de método generado automáticamente
+                if(labelSeleccionado != null){
+                	Controlador.getInstancia().accion(labelSeleccionado.gettPelicula().getIdPelicula(), Controlador.BORRAR_PELICULA);
+                	Controlador.getInstancia().accion(null, Controlador.VER_PELICULAS);
+                }
+			}
+        	
+        });
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        btnEliminarPelicula = new javax.swing.JButton();
+        btnModificarPelicula = new javax.swing.JButton();
+        btnAnadirPelicula = new javax.swing.JButton();
+        scrollPeliculas = new javax.swing.JScrollPane();
+        panelAllPeliculas = new javax.swing.JPanel();
+
+        setPreferredSize(new java.awt.Dimension(600, 411));
+
+        btnEliminarPelicula.setText("Eliminar Pelicula");
+
+        btnModificarPelicula.setText("Modificar Pelicula");
+
+        btnAnadirPelicula.setText("Anadir Pelicula");
+
+        panelAllPeliculas.setPreferredSize(new java.awt.Dimension(595, alto));
+
+        javax.swing.GroupLayout panelAllPeliculasLayout = new javax.swing.GroupLayout(panelAllPeliculas);
+        panelAllPeliculas.setLayout(panelAllPeliculasLayout);
+        panelAllPeliculasLayout.setHorizontalGroup(
+            panelAllPeliculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 595, Short.MAX_VALUE)
+        );
+        panelAllPeliculasLayout.setVerticalGroup(
+            panelAllPeliculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 369, Short.MAX_VALUE)
+        );
+
+        scrollPeliculas.setViewportView(panelAllPeliculas);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(209, 209, 209)
+                .addComponent(btnAnadirPelicula)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnModificarPelicula)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarPelicula)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(scrollPeliculas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(scrollPeliculas, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminarPelicula)
+                    .addComponent(btnModificarPelicula)
+                    .addComponent(btnAnadirPelicula))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+    }// </editor-fold>                        
+
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton btnAnadirPelicula;
+    private javax.swing.JButton btnEliminarPelicula;
+    private javax.swing.JButton btnModificarPelicula;
+    private javax.swing.JPanel panelAllPeliculas;
+    private javax.swing.JScrollPane scrollPeliculas;
+    // End of variables declaration                   
+}
